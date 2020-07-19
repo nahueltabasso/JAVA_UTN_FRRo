@@ -16,6 +16,15 @@ public class PersonaRepository {
 	private RolRepository rolRepository = new RolRepository();
 	
 	/**
+	 * Metodo que construye el objeto Persona
+	 * @param resultSet
+	 * @return
+	 */
+	private Persona buildPersona(ResultSet resultSet) {
+		return null;
+	}
+	
+	/**
 	 * Metodo que returna todas las personas
 	 * @return
 	 */
@@ -222,6 +231,12 @@ public class PersonaRepository {
 		return persona;
 	}
 	
+	/**
+	 * Metodo que retorna un objeto Persona segun su documento
+	 * @param tipoDocumento
+	 * @param numeroDocumento
+	 * @return
+	 */
 	public Persona findByTipoDocumentoAndByNroDocumento(String tipoDocumento, String numeroDocumento) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -260,6 +275,11 @@ public class PersonaRepository {
 		return persona;
 	}
 	
+	/**
+	 * Metodo que retorna una lista de personas segun su apellido
+	 * @param apellido
+	 * @return
+	 */
 	public List<Persona> findByApellido(String apellido) {
 		Connection connection = null;
 		PreparedStatement statement = null;

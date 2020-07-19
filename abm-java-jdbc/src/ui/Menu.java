@@ -45,7 +45,7 @@ public class Menu {
 			break;
 		case "find id":
 			System.out.println(findById());
-		case "seach":
+		case "search":
 			System.out.println(findByApellido());
 			break;
 		case "new":
@@ -70,11 +70,13 @@ public class Menu {
 	private String getCommand() {
 		System.out.println("Ingrese el comando según la opción que desee realizar");
 		System.out.println("List\t\t - Listar todos");
-		System.out.println("Find\t\t - Buscar por tipo y nro de documento"); //solo debe devolver 1
-		System.out.println("Search\t\t - Listar por apellido"); //puede devolver varios
+		System.out.println("Find\t\t - Buscar por tipo y nro de documento"); 
+		System.out.println("Find ID\t\t - Buscar por el id de la persona");
+		System.out.println("Search\t\t - Listar por apellido"); 
 		System.out.println("New\t\t - Crea una nueva persona y asigna un rol existente");
 		System.out.println("Edit\t\t - Busca por tipo y nro de documento y actualiza todos los datos");
 		System.out.println("Delete\t\t - Borra por tipo y nro de documento");
+		System.out.println("Delete ID\t\t - Borra por el id de la persona");
 		System.out.println();
 		System.out.print("comando: ");
 		return s.nextLine();
