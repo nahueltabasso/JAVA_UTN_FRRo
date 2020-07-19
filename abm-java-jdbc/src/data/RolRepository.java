@@ -11,6 +11,17 @@ import entities.Persona;
 import entities.Rol;
 
 public class RolRepository {
+	
+	public Rol buildRol(ResultSet resultSet) {
+		Rol rol = new Rol();
+		try {
+			rol.setId(resultSet.getLong(1));
+			rol.setDescripcion(resultSet.getString(2));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rol;
+	}
 
 	/**
 	 * Metodo que retorna todos los roles de la base de datos
@@ -28,8 +39,7 @@ public class RolRepository {
 			if (resultSet != null) {
 				while (resultSet.next()) {
 					Rol rol = new Rol();
-					rol.setId(resultSet.getLong(1));
-					rol.setDescripcion(resultSet.getString(2));
+					rol = buildRol(resultSet);
 					rolList.add(rol);
 				}
 			}
@@ -61,8 +71,7 @@ public class RolRepository {
 			resultSet = statement.executeQuery();
 			if (resultSet != null && resultSet.next()) {
 				rol = new Rol();
-				rol.setId(resultSet.getLong(1));
-				rol.setDescripcion(resultSet.getString(2));
+				rol = buildRol(resultSet);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,8 +104,7 @@ public class RolRepository {
 			if (resultSet != null) {
 				while (resultSet.next()) {
 					Rol rol = new Rol();
-					rol.setId(resultSet.getLong(1));
-					rol.setDescripcion(resultSet.getString(2));
+					rol = buildRol(resultSet);
 					rolesPersona.add(rol);
 				}
 			}

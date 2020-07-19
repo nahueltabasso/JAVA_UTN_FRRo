@@ -21,7 +21,25 @@ public class PersonaRepository {
 	 * @return
 	 */
 	private Persona buildPersona(ResultSet resultSet) {
-		return null;
+		Persona persona = new Persona();
+		try {
+			persona.setId(resultSet.getLong(1));
+			persona.setNombre(resultSet.getString(2));
+			persona.setApellido(resultSet.getString(3));
+			Documento documento = new Documento();
+			documento.setTipoDocumento(resultSet.getString(4));
+			documento.setNumeroDocumento(resultSet.getString(5));
+			persona.setDocumento(documento);
+			persona.setEmail(resultSet.getString(6));
+			persona.setPassword(resultSet.getString(7));
+			persona.setTelefono(resultSet.getString(8));
+			persona.setHabilitado(resultSet.getBoolean(9));
+			List<Rol> roles = rolRepository.findRolesByIdPersona(persona.getId());
+			persona.setRoles(roles);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return persona;
 	}
 	
 	/**
@@ -39,20 +57,7 @@ public class PersonaRepository {
 												  + "from persona");
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
-				Persona persona = new Persona();
-				persona.setId(resultSet.getLong(1));
-				persona.setNombre(resultSet.getString(2));
-				persona.setApellido(resultSet.getString(3));
-				Documento documento = new Documento();
-				documento.setTipoDocumento(resultSet.getString(4));
-				documento.setNumeroDocumento(resultSet.getString(5));
-				persona.setDocumento(documento);
-				persona.setEmail(resultSet.getString(6));
-				persona.setPassword(resultSet.getString(7));
-				persona.setTelefono(resultSet.getString(8));
-				persona.setHabilitado(resultSet.getBoolean(9));
-				List<Rol> roles = rolRepository.findRolesByIdPersona(persona.getId());
-				persona.setRoles(roles);
+				Persona persona = buildPersona(resultSet);
 				personaList.add(persona);
 			}
 		} catch (SQLException e) {
@@ -84,18 +89,7 @@ public class PersonaRepository {
 			resultSet = statement.executeQuery();
 			if (resultSet != null && resultSet.next()) {
 				persona = new Persona();
-				persona.setId(resultSet.getLong(1));
-				persona.setNombre(resultSet.getString(2));
-				persona.setApellido(resultSet.getString(3));
-				Documento documento = new Documento();
-				documento.setTipoDocumento(resultSet.getString(4));
-				documento.setNumeroDocumento(resultSet.getString(5));
-				persona.setDocumento(documento);
-				persona.setEmail(resultSet.getString(6));
-				persona.setPassword(resultSet.getString(7));
-				persona.setTelefono(resultSet.getString(8));
-				persona.setHabilitado(resultSet.getBoolean(9));
-				persona.setRoles(rolRepository.findRolesByIdPersona(persona.getId()));
+				persona = buildPersona(resultSet);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -134,6 +128,8 @@ public class PersonaRepository {
 			// Validamos que nos devuelva el id para retornar la persona
 			if (resultSet != null && resultSet.next()) {
 				persona.setId(resultSet.getLong(1));
+				List<Rol> roles = rolRepository.addRolPersona(persona);
+				persona.setRoles(roles);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -208,18 +204,7 @@ public class PersonaRepository {
 			resultSet = statement.executeQuery();
 			if (resultSet != null && resultSet.next()) {
 				persona = new Persona();
-				persona.setId(resultSet.getLong(1));
-				persona.setNombre(resultSet.getString(2));
-				persona.setApellido(resultSet.getString(3));
-				Documento documento = new Documento();
-				documento.setTipoDocumento(resultSet.getString(4));
-				documento.setNumeroDocumento(resultSet.getString(5));
-				persona.setDocumento(documento);
-				persona.setEmail(resultSet.getString(6));
-				persona.setPassword(resultSet.getString(7));
-				persona.setTelefono(resultSet.getString(8));
-				persona.setHabilitado(resultSet.getBoolean(9));
-				persona.setRoles(rolRepository.findRolesByIdPersona(persona.getId()));
+				persona = buildPersona(resultSet);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -252,18 +237,7 @@ public class PersonaRepository {
 			resultSet = statement.executeQuery();
 			if (resultSet != null && resultSet.next()) {
 				persona = new Persona();
-				persona.setId(resultSet.getLong(1));
-				persona.setNombre(resultSet.getString(2));
-				persona.setApellido(resultSet.getString(3));
-				Documento documento = new Documento();
-				documento.setTipoDocumento(resultSet.getString(4));
-				documento.setNumeroDocumento(resultSet.getString(5));
-				persona.setDocumento(documento);
-				persona.setEmail(resultSet.getString(6));
-				persona.setPassword(resultSet.getString(7));
-				persona.setTelefono(resultSet.getString(8));
-				persona.setHabilitado(resultSet.getBoolean(9));
-				persona.setRoles(rolRepository.findRolesByIdPersona(persona.getId()));
+				persona = buildPersona(resultSet);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -293,19 +267,7 @@ public class PersonaRepository {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				Persona persona = new Persona();
-				persona.setId(resultSet.getLong(1));
-				persona.setNombre(resultSet.getString(2));
-				persona.setApellido(resultSet.getString(3));
-				Documento documento = new Documento();
-				documento.setTipoDocumento(resultSet.getString(4));
-				documento.setNumeroDocumento(resultSet.getString(5));
-				persona.setDocumento(documento);
-				persona.setEmail(resultSet.getString(6));
-				persona.setPassword(resultSet.getString(7));
-				persona.setTelefono(resultSet.getString(8));
-				persona.setHabilitado(resultSet.getBoolean(9));
-				List<Rol> roles = rolRepository.findRolesByIdPersona(persona.getId());
-				persona.setRoles(roles);
+				persona = buildPersona(resultSet);
 				personaList.add(persona);
 			}
 		} catch (SQLException e) {
