@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.Persona;
 import entities.Rol;
 
 public class RolRepository {
@@ -107,5 +108,33 @@ public class RolRepository {
 			DataBaseConnection.closeResultSet(resultSet);
 		}
 		return rolesPersona;
+	}
+	
+	/**
+	 * Metodo que inserta en la tabla rol_persona los roles asignados a la persona
+	 * @param persona
+	 * @return
+	 */
+	public List<Rol> addRolPersona(Persona persona) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = DataBaseConnection.getConnection();
+			statement = connection.prepareStatement("insert into rol_persona(id_rol, id_persona) values (?, ?)");
+			// Pasamos los parametros para la query nativa
+			for (Rol r : persona.getRoles()) {
+				statement.setLong(1, r.getId());
+				statement.setLong(2, persona.getId());
+				statement.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection(connection);
+			DataBaseConnection.closePreparedStatement(statement);
+			DataBaseConnection.closeResultSet(resultSet);
+		}
+		return persona.getRoles();
 	}
 }

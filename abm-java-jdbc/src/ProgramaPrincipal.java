@@ -1,15 +1,12 @@
-import java.util.List;
 
-import data.PersonaRepository;
-import data.RolRepository;
-import entities.Documento;
-import entities.Persona;
-import entities.Rol;
+import ui.Menu;
 
 public class ProgramaPrincipal {
 	
 	public static void main(String[] args) {
-		
+		Menu m = new Menu();
+		m.start();
+		/**
 		PersonaRepository personaRepository = new PersonaRepository();
 		RolRepository rolRepository = new RolRepository();
 		
@@ -63,6 +60,7 @@ public class ProgramaPrincipal {
 		for (Rol r : roles) {
 			System.out.println(r.toString());
 		}
+		*/
 	}
 
 }

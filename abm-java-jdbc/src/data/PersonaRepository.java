@@ -259,4 +259,42 @@ public class PersonaRepository {
 		}
 		return persona;
 	}
+	
+	public List<Persona> findByApellido(String apellido) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		List<Persona> personaList = new ArrayList<Persona>();
+		try {
+			connection = DataBaseConnection.getConnection();
+			statement = connection.prepareStatement("select id, nombre, apellido, tipo_doc, nro_doc, email, password, tel, habilitado "
+												  + "from persona where apellido like ?");
+			statement.setString(1, apellido);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				Persona persona = new Persona();
+				persona.setId(resultSet.getLong(1));
+				persona.setNombre(resultSet.getString(2));
+				persona.setApellido(resultSet.getString(3));
+				Documento documento = new Documento();
+				documento.setTipoDocumento(resultSet.getString(4));
+				documento.setNumeroDocumento(resultSet.getString(5));
+				persona.setDocumento(documento);
+				persona.setEmail(resultSet.getString(6));
+				persona.setPassword(resultSet.getString(7));
+				persona.setTelefono(resultSet.getString(8));
+				persona.setHabilitado(resultSet.getBoolean(9));
+				List<Rol> roles = rolRepository.findRolesByIdPersona(persona.getId());
+				persona.setRoles(roles);
+				personaList.add(persona);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection(connection);
+			DataBaseConnection.closePreparedStatement(statement);
+			DataBaseConnection.closeResultSet(resultSet);
+		}
+		return personaList;
+	}
 }

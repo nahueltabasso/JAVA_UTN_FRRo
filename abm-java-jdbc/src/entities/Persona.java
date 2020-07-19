@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Persona {
@@ -14,6 +15,10 @@ public class Persona {
 	private boolean habilitado;
 	private List<Rol> roles;
 
+	public Persona() {
+		this.roles = new ArrayList<Rol>();
+	}
+	
 	public Long getId() {
 		return id;
 	}
