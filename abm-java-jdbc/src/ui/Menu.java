@@ -78,7 +78,7 @@ public class Menu {
 		System.out.println("Delete\t\t - Borra por tipo y nro de documento");
 		System.out.println("Delete ID\t\t - Borra por el id de la persona");
 		System.out.println();
-		System.out.print("comando: ");
+		System.out.print("Comando: ");
 		return s.nextLine();
 	}
 	
@@ -146,7 +146,11 @@ public class Menu {
 					rolStr = s.nextLine();
 				} while ((!rolStr.equalsIgnoreCase("1")) && (!rolStr.equalsIgnoreCase("2")));
 				Rol rol = rolCtrl.getById(Long.parseLong(rolStr));
-				rolesPersona.add(rol);
+				if (!persona.getRoles().contains(rol)) {
+					rolesPersona.add(rol);					
+				} else {
+					System.out.println("El rol ya esta asignado!");
+				}
 				System.out.println("\n");
 				System.out.println("Desea asignar otro rol a la persona? (Si/No)");
 				rta = s.nextLine();
