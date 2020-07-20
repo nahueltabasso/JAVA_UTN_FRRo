@@ -4,6 +4,8 @@ package ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import entities.Documento;
 import entities.Persona;
@@ -11,6 +13,7 @@ import entities.Rol;
 import logic.LoginController;
 import logic.PersonaController;
 import logic.RolController;
+import utils.Utils;
 
 public class Menu {
 	Scanner s=null;
@@ -21,18 +24,22 @@ public class Menu {
 	public void start() {
 		s = new Scanner(System.in);
 		Persona persona = login();
-		System.out.println("Bienvenido " + persona.getNombre() + " " + persona.getApellido());
-		System.out.println();
-		
-		String command;
-		do {
-			command=getCommand();
-			executeCommand(command);
+		if (persona != null) {
+			System.out.println("Bienvenido " + persona.getNombre() + " " + persona.getApellido());
 			System.out.println();
 			
-		}while(!command.equalsIgnoreCase("exit"));
-		
-		s.close();
+			String command;
+			do {
+				command=getCommand();
+				executeCommand(command);
+				System.out.println();
+				
+			}while(!command.equalsIgnoreCase("exit"));
+			
+			s.close();			
+		} else {
+			System.out.println("Lo siento! Contraseña o email incorrecto!");
+		}
 	}
 
 	private void executeCommand(String command) {
@@ -96,13 +103,36 @@ public class Menu {
 	private Persona find() {
 		System.out.println();
 		Persona persona = new Persona();
-		Documento d = new Documento();
-		persona.setDocumento(d);
-		System.out.print("Tipo doc: ");
-		d.setTipoDocumento(s.nextLine());
-		System.out.print("Nro doc: ");
-		d.setNumeroDocumento(s.nextLine());
+		persona.setDocumento(ingresarDocumento());
 		return personaCtrl.getByDocumento(persona);
+	}
+	
+	private Documento ingresarDocumento() {
+		Documento d = new Documento();
+		boolean flagTipo = true;
+		while (flagTipo) {
+			System.out.print("Tipo doc: ");
+			d.setTipoDocumento(s.nextLine());
+			flagTipo = Utils.cadContainsDigits(d.getTipoDocumento());
+		}
+		boolean flagNro = true;
+		while (flagNro) {
+			System.out.print("Nro doc: ");
+			d.setNumeroDocumento(s.nextLine());
+			flagNro = Utils.cadContainsLetters(d.getNumeroDocumento());
+		}
+		return d;
+	}
+	
+	private String ingresarTelefono() {
+		String telefono = null;
+		boolean flagNro = true;
+		while (flagNro) {
+			System.out.print("Nro Telefono: ");
+			telefono = s.nextLine();
+			flagNro = Utils.cadContainsLetters(telefono);
+		}
+		return telefono;
 	}
 	
 	private Persona findById() {
@@ -114,22 +144,20 @@ public class Menu {
 	
 	private Persona addPersona() {
 		Persona persona = new Persona();
-		Documento doc = new Documento();
 		System.out.println("Nombre: ");
 		persona.setNombre(s.nextLine());
 		System.out.println("Apellido: ");
 		persona.setApellido(s.nextLine());
-		System.out.println("Tipo Doc: ");
-		doc.setTipoDocumento(s.nextLine());
-		System.out.println("Nro Doc: ");
-		doc.setNumeroDocumento(s.nextLine());
-		persona.setDocumento(doc);
-		System.out.println("Email: ");
-		persona.setEmail(s.nextLine());
+		persona.setDocumento(ingresarDocumento());
+		boolean flagEmail = false;
+		while (!flagEmail) {
+			System.out.println("Email: ");
+			persona.setEmail(s.nextLine());
+			flagEmail = validaEmail(persona.getEmail());
+		}
 		System.out.println("Password: ");
 		persona.setPassword(s.nextLine());
-		System.out.println("Telefono: ");
-		persona.setTelefono(s.nextLine());
+		persona.setTelefono(ingresarTelefono());
 		persona.setHabilitado(true);
 		// Parte para agregar los roles de la persona
 		List<Rol> rolesPersona = new ArrayList<Rol>();
@@ -184,5 +212,17 @@ public class Menu {
 		System.out.println("Nro Doc: ");
 		doc.setNumeroDocumento(s.nextLine());
 		personaCtrl.deleteByDocumento(doc);
+	}
+	
+	private boolean validaEmail(String email) {
+		// Patron para validar el email
+		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Matcher match = pattern.matcher(email);
+		if (match.find()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
