@@ -70,4 +70,13 @@ public class PersonaController {
 	public Persona getById(Long id) {
 		return personaRepository.findById(id);
 	}
+	
+	/**
+	 * Metodo para editar una persona
+	 * @param persona
+	 * @return
+	 */
+	public void editPersona(Persona persona) {
+		personaRepository.update(persona);
+	}
 }

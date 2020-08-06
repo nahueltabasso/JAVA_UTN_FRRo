@@ -1,6 +1,5 @@
 package ui;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -59,7 +58,8 @@ public class Menu {
 			System.out.println(addPersona());
 			break;
 		case "edit":
-			
+			actualizarPersona();
+			System.out.println(personaCtrl.getAll());
 			break;
 		case "delete":
 			deleteByDocumento();
@@ -140,6 +140,20 @@ public class Menu {
 		System.out.print("ID Persona: ");
 		id = s.nextLine();
 		return personaCtrl.getById(Long.parseLong(id));
+	}
+	
+	private void actualizarPersona() {
+		Persona persona = new Persona();
+		persona.setDocumento(ingresarDocumento());
+		// Considerando que solo se pueden modificar el mail y el telefono
+		boolean flagEmail = false;
+		while (!flagEmail) {
+			System.out.println("Email: ");
+			persona.setEmail(s.nextLine());
+			flagEmail = validaEmail(persona.getEmail());
+		}
+		persona.setTelefono(ingresarTelefono());
+		personaCtrl.editPersona(persona);
 	}
 	
 	private Persona addPersona() {

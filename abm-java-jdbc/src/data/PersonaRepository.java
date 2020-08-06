@@ -279,4 +279,29 @@ public class PersonaRepository {
 		}
 		return personaList;
 	}
+	
+	/**
+	 * Metodo que actualiza una persona en la base de datos
+	 * @param persona
+	 */
+	public void update(Persona persona) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = DataBaseConnection.getConnection();
+			statement = connection.prepareStatement("update persona set email = ?, tel = ? WHERE tipo_doc = ? and nro_doc = ?");
+			statement.setString(1, persona.getEmail());
+			statement.setString(2, persona.getTelefono());
+			statement.setString(3, persona.getDocumento().getTipoDocumento());
+			statement.setString(4, persona.getDocumento().getNumeroDocumento());
+			int row = statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection(connection);
+			DataBaseConnection.closePreparedStatement(statement);
+			DataBaseConnection.closeResultSet(resultSet);
+		}
+	}
 }

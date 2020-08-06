@@ -95,7 +95,7 @@ public class Persona {
 	public String toString() {
 		return "Persona [id=" + id + ", documento=" + documento + ", nombre=" + nombre + ", apellido=" + apellido
 				+ ", email=" + email + ", password=" + password + ", telefono=" + telefono + ", habilitado="
-				+ habilitado + ", roles=" + roles + "]";
+				+ habilitado + ", roles=" + roles + "]\n";
 	}
 
 }
